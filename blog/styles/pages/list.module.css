@@ -1,0 +1,26 @@
+.list_title{
+    font-size: 1.1rem;
+    color: #00bcc9;
+    padding: 0 0.5rem;
+}
+
+.list_context{
+    color: #777;
+    padding:.5rem;
+}
+
+.list_icon{
+    padding:0.4rem ;
+    color:#AAA;
+}
+
+.list_icon span{
+    display: inline-block;
+    padding: 0 10px;
+}
+
+.bread_div{
+    padding: .5rem;
+    border-bottom:1px solid rgb(249, 250, 252);
+    background-color: #a0c3e51a;
+}

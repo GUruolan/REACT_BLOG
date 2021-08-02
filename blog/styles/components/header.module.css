@@ -1,0 +1,33 @@
+.header{
+    background-color: #fff;
+    padding: .4rem;
+   /*  overflow: hidden; */
+    height: 3.2rem;
+    border-bottom:1px solid #eee;
+}
+.headerlogo{
+    color: rgba(0, 143, 187, 0.726);
+    font-size: 1.4rem;
+    text-align: left;
+
+}
+.headertxt{
+    font-size: 0.6rem;
+    color: #999;
+    display: inline-block;
+    padding-left: 0.3rem;
+}
+.antmeu{
+    line-height: 2.8rem;
+   
+}
+.antmenuitem{
+    /* font-size: 1.1rem !important; */
+    padding-left:2rem;
+    padding-right:2rem;
+
+}
+.headericon{
+    padding-left:.3rem;
+    padding-right:.3rem;
+}
