@@ -71,6 +71,7 @@ export default function Home(list) {
     </div>
   )
 }
+
 Home.getInitialProps = async ()=>{ //接收初始值，也就是形参list
   const promise = new Promise((resolve)=>{
     axios(service_path.urlarticlelist).then(
