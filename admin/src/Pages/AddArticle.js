@@ -40,7 +40,7 @@ function AddArticle(){
  <Row>
       <Col span={24}>
               <Button  size="large">暂存文章</Button>&nbsp;
-              <Button type="primary" size="large" onClick={}>发布文章</Button>
+              <Button type="primary" size="large" >发布文章</Button>
               <br/>
       </Col>
   </Row>
