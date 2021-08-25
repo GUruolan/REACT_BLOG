@@ -44,8 +44,6 @@ function Login(props){
             setIsLoading(false)
         },1000)
     }
-    
-
     return (
         <div className="login-div">
 
