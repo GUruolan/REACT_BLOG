@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import marked from 'marked'
+import hljs from "highlight.js";
 import '../static/addArticle.css'
 
 import { Row, Col, Input, Select, Button, DatePicker } from 'antd'
