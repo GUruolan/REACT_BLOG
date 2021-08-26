@@ -2,10 +2,10 @@
 
 const Controller = require('egg').Controller
 
-class MainController extends Controller{
+class MainController extends Controller{ //提供ctx（上下文）等属性和方法
 
     async index(){
-        //首页的文章列表数据
+        //测试
         this.ctx.body='hi api'
     }
 
@@ -26,7 +26,11 @@ class MainController extends Controller{
             this.ctx.body={'data':'登录失败'}
         } 
     }
-
+        //获取后台文章分类信息
+    async getTypeInfo(){
+        const resType = await this.app.mysql.select('article_type') //请求article_type表中的所有数据
+        this.ctx.body={data:resType}
+    }
 }
 
 module.exports = MainController

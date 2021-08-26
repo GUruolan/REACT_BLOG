@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import '../static/adminIndex.css'
 
+
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 
-function AdminIndex() {
+function AdminIndex(props) {
 
     const [collapsed, setCollapsed] = useState(false)
+    const [typeInfo, setTypeInfo] = useState([])
 
     const onCollapse = collapsed => {
         setCollapsed(collapsed)
@@ -16,9 +18,9 @@ function AdminIndex() {
 
     return (
 
-        <Layout style={{ minHeight: '100vh', margin: '0 16px'}}>
+        <Layout style={{ minHeight: '100vh', margin: '0 16px' }}>
 
-            <Sider collapsible collapsed={collapsed} onCollapse={onCollapse} collapsedWidth = '20px'>
+            <Sider collapsible collapsed={collapsed} onCollapse={onCollapse} collapsedWidth='20px'>
                 <div className="logo" />
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                     <Menu.Item key="1">
@@ -46,7 +48,7 @@ function AdminIndex() {
                 </Menu>
             </Sider>
             <Layout>
-                <Header style={{ background: '#fff', padding: 0,margin: '0 16px' }} />
+                <Header style={{ background: '#fff', padding: 0, margin: '0 16px' }} />
                 <Content style={{ margin: '0 16px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>后台管理</Breadcrumb.Item>
