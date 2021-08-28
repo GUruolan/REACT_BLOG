@@ -157,8 +157,8 @@ function AddArticle(props) {
 
     return (
         <div>
-            <Row gutter={10}>
-                <Col span={14}>
+            <Row gutter={20}>
+                <Col span={12}>
                     <Input
                         placeholder="博客标题"
                         onChange={e => {
@@ -168,7 +168,7 @@ function AddArticle(props) {
                 </Col>
 
                 <Col span={3}>
-                    <Select defaultValue={selectedType} size="large" onChange={selectTypeHandler} >
+                    <Select defaultValue={selectedType}  onChange={selectTypeHandler} >
                         {
                             typeInfo.map((item, index) => {
                                 return (<Option key={index} value={item.id}>{item.typename}</Option>)
@@ -181,13 +181,13 @@ function AddArticle(props) {
                         <DatePicker
                             placeholder="发布日期"
                             onChange={(date, dateString) => setShowDate(dateString)}
-                            size="large"
+                            
                         />
                     </div>
                 </Col>
-                <Col span={4}>
+                <Col span={6}>
                     <Button size="large">暂存文章</Button>&nbsp;
-                <Button type="primary" size="large" onClick={saveArticle} >发布文章</Button>
+                    <Button type="primary" size="large" onClick={saveArticle} >发布文章</Button>
                     <br />
                 </Col>
             </Row>
