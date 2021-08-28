@@ -77,8 +77,6 @@ function AdminIndex(props) {
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>REACT_BLOG Admin</Footer>
             </Layout>
-
-
         </Layout>
     )
 

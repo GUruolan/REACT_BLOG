@@ -58,6 +58,45 @@ class MainController extends Controller { //提供ctx（上下文）等属性和
             isScuccess: updateSuccess
         }
     }
+    async getArticleList() {
+
+        let sql = 'SELECT article.id as id,' +
+            'article.title as title,' +
+            'article.introduce as introduce,' +
+            "article.addtime as addtime," +
+            "article.viewcount as viewcount," +
+            'article_type.typename as typename ' +
+            'FROM article LEFT JOIN article_type ON article.type_id = article_type.id ' +
+            'ORDER BY article.id DESC '
+
+        const resList = await this.app.mysql.query(sql)
+        this.ctx.body = { list: resList }
+
+    }
+
+    //删除文章
+    async delArticle() {
+        let id = this.ctx.params.id
+        const res = await this.app.mysql.delete('article', { 'id': id })
+        this.ctx.body = { data: res }
+    }
+
+    async getArticleById(){
+        let id = this.ctx.params.id
+    
+        let sql = 'SELECT article.id as id,'+
+        'article.title as title,'+
+        'article.introduce as introduce,'+
+        'article.content as content,'+
+        "article.addtime as addtime,"+
+        'article.viewcount as viewcount ,'+
+        'article_type.typename as typename ,'+
+        'article_type.id as type_id '+
+        'FROM article LEFT JOIN article_type ON article.type_id = article_type.id '+
+        'WHERE article.id='+id
+        const result = await this.app.mysql.query(sql)
+        this.ctx.body={data:result}
+    }
 }
 
 module.exports = MainController

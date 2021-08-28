@@ -6,4 +6,7 @@ module.exports = app =>{
     router.get('/admin/getypeinfo', controller.admin.main.getTypeInfo); //在addartical中调用，中间件拦截未登录的用户
     router.post('/admin/addArticle',controller.admin.main.addArticle)
     router.post('/admin/updateArticle', controller.admin.main.updateArticle)
+    router.get('/admin/getArticleList',controller.admin.main.getArticleList)
+    router.get('/admin/delArticle/:id',controller.admin.main.delArticle)
+    router.get('/admin/getArticleById/:id',controller.admin.main.getArticleById)
 }

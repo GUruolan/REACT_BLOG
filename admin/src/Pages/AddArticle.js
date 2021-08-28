@@ -77,7 +77,7 @@ function AddArticle(props) {
      * @returns 
      */
     const saveArticle = () => {
- 
+
         if (selectedType == "选择文章类型") {
             message.error('必须选择文章类别')
             return false
@@ -94,7 +94,7 @@ function AddArticle(props) {
             message.error('发布日期不能为空')
             return false
         }
-        
+
         let dataProps = {}   //传递到接口的参数
         dataProps.type_id = selectedType
         dataProps.title = articleTitle
@@ -116,7 +116,7 @@ function AddArticle(props) {
                 res => {
                     setArticleId(res.data.insertId) //成功上传数据后，间insertId设置未articleID
                     if (res.data.isScuccess) {
-                        message.success('文章保存成功' )
+                        message.success('文章保存成功')
                         console.log(res.data)
                     } else {
                         message.error('文章保存失败');
@@ -124,35 +124,61 @@ function AddArticle(props) {
 
                 }
             )
-        }else{
+        } else {
 
-            dataProps.id = articleId 
+            dataProps.id = articleId
             axios({
-                method:'post',
-                url:service_path.updateArticle,
-                header:{ 'Access-Control-Allow-Origin':'*' },
-                data:dataProps,
+                method: 'post',
+                url: service_path.updateArticle,
+                header: { 'Access-Control-Allow-Origin': '*' },
+                data: dataProps,
                 withCredentials: true
             }).then(
-                res=>{
-        
-                if(res.data.isScuccess){
-                    message.success('文章保存成功')
-                }else{
-                    message.error('保存失败');
-                }
-        
-        
+                res => {
+
+                    if (res.data.isScuccess) {
+                        message.success('文章保存成功')
+                    } else {
+                        message.error('保存失败');
+                    }
+
+
                 }
             )
         }
 
 
     }
+    const getArticleById = (id) => {
+        axios(service_path.getArticleById + id, {
+            withCredentials: true,
+            header: { 'Access-Control-Allow-Origin': '*' }
+        }).then(
+            res => {
+                let articleInfo= res.data.data[0]
+                console.log(articleInfo)
+                setArticleTitle(res.data.data[0].title)
+                setArticleContent(res.data.data[0].content)
+                let html = marked(res.data.data[0].content)
+                setMarkdownContent(html)
+                setIntroducemd(res.data.data[0].introduce)
+                let tmpInt = marked(res.data.data[0].introduce)
+                setIntroducehtml(tmpInt)
+                setShowDate(res.data.data[0].addtime)
+                setSelectType(res.data.data[0].typeId)
+
+            }
+        )
+    }
 
     useEffect(() => {
         //在初始加载页面时，获取一次类别信息
         getTypeInfo()
+        let tmpId = props.match.params.id
+        if (tmpId) {
+            setArticleId(tmpId)
+            getArticleById(tmpId)
+        }
     }, [])
 
     return (
@@ -168,7 +194,7 @@ function AddArticle(props) {
                 </Col>
 
                 <Col span={3}>
-                    <Select defaultValue={selectedType}  onChange={selectTypeHandler} >
+                    <Select defaultValue={selectedType} onChange={selectTypeHandler} >
                         {
                             typeInfo.map((item, index) => {
                                 return (<Option key={index} value={item.id}>{item.typename}</Option>)
@@ -181,7 +207,7 @@ function AddArticle(props) {
                         <DatePicker
                             placeholder="发布日期"
                             onChange={(date, dateString) => setShowDate(dateString)}
-                            
+
                         />
                     </div>
                 </Col>
