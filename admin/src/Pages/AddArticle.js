@@ -1,4 +1,5 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import { Row, Col, Input, Select, Button, DatePicker, message } from 'antd'
 import marked from 'marked'
 import hljs from "highlight.js";
 import axios from 'axios';
@@ -6,7 +7,7 @@ import service_path from '../config/apiurl.js'
 import '../static/addArticle.css'
 
 
-import { Row, Col, Input, Select, Button, DatePicker } from 'antd'
+
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -49,7 +50,7 @@ function AddArticle(props) {
         setIntroducehtml(html)
     }
 
-    //从中台得到文章类别信息
+    //从中台得到文章类别信息(加中间件拦截)
     const getTypeInfo = () => {
         axios({
             method: 'get',
@@ -68,9 +69,91 @@ function AddArticle(props) {
             }
         )
     }
-    useEffect(()=>{
-        getTypeInfo() 
-       },[])
+    const selectTypeHandler = (value) => { //选择类别信息
+        setSelectType(value)
+    }
+    /**
+     * function: 保存文章
+     * @returns 
+     */
+    const saveArticle = () => {
+ 
+        if (selectedType == "选择文章类型") {
+            message.error('必须选择文章类别')
+            return false
+        } else if (!articleTitle) {
+            message.error('文章名称不能为空')
+            return false
+        } else if (!articleContent) {
+            message.error('文章内容不能为空')
+            return false
+        } else if (!introducemd) {
+            message.error('简介不能为空')
+            return false
+        } else if (!showDate) {
+            message.error('发布日期不能为空')
+            return false
+        }
+        
+        let dataProps = {}   //传递到接口的参数
+        dataProps.type_id = selectedType
+        dataProps.title = articleTitle
+        dataProps.content = articleContent
+        dataProps.introduce = introducemd
+        let datetext = showDate.replace('-', '/') //把字符串转换成时间戳
+        dataProps.addtime = new Date(datetext) // 1000
+
+        //首次点击=>添加文章或 再次点击=>修改文章
+        if (articleId == 0) {
+            console.log('articleId=:' + articleId)
+            dataProps.viewcount = Math.ceil(Math.random() * 100) + 1000
+            axios({
+                method: 'post',
+                url: service_path.addArticle,
+                data: dataProps,
+                withCredentials: true
+            }).then(
+                res => {
+                    setArticleId(res.data.insertId) //成功上传数据后，间insertId设置未articleID
+                    if (res.data.isScuccess) {
+                        message.success('文章保存成功' )
+                        console.log(res.data)
+                    } else {
+                        message.error('文章保存失败');
+                    }
+
+                }
+            )
+        }else{
+
+            dataProps.id = articleId 
+            axios({
+                method:'post',
+                url:service_path.updateArticle,
+                header:{ 'Access-Control-Allow-Origin':'*' },
+                data:dataProps,
+                withCredentials: true
+            }).then(
+                res=>{
+        
+                if(res.data.isScuccess){
+                    message.success('文章保存成功')
+                }else{
+                    message.error('保存失败');
+                }
+        
+        
+                }
+            )
+        }
+
+
+    }
+
+    useEffect(() => {
+        //在初始加载页面时，获取一次类别信息
+        getTypeInfo()
+    }, [])
 
     return (
         <div>
@@ -78,14 +161,17 @@ function AddArticle(props) {
                 <Col span={14}>
                     <Input
                         placeholder="博客标题"
+                        onChange={e => {
+                            setArticleTitle(e.target.value)
+                        }}
                         size="large" />
                 </Col>
 
                 <Col span={3}>
-                    <Select defaultValue={selectedType} size="large">
+                    <Select defaultValue={selectedType} size="large" onChange={selectTypeHandler} >
                         {
-                            typeInfo.map((item,index)=>{
-                                return (<Option key = {index} value={item.id}>{item.typename}</Option>)
+                            typeInfo.map((item, index) => {
+                                return (<Option key={index} value={item.id}>{item.typename}</Option>)
                             })
                         }
                     </Select>
@@ -94,13 +180,14 @@ function AddArticle(props) {
                     <div>
                         <DatePicker
                             placeholder="发布日期"
+                            onChange={(date, dateString) => setShowDate(dateString)}
                             size="large"
                         />
                     </div>
                 </Col>
                 <Col span={4}>
                     <Button size="large">暂存文章</Button>&nbsp;
-                <Button type="primary" size="large" >发布文章</Button>
+                <Button type="primary" size="large" onClick={saveArticle} >发布文章</Button>
                     <br />
                 </Col>
             </Row>
