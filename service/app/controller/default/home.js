@@ -44,7 +44,7 @@ class HomeController extends Controller {
         this.ctx.body = {data:result}
     }
     
-
+    
 }
 
 module.exports = HomeController
